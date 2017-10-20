@@ -8,7 +8,7 @@ import sys
 import pprint
 import textwrap
 
-import grafanalib._parse
+import grafanalib.core
 
 
 DASHBOARD_SUFFIX = '.dashboard.py'
