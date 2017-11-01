@@ -318,6 +318,8 @@ class Legend(object):
     hideZero = attr.ib(default=False, validator=instance_of(bool))
     rightSide = attr.ib(default=False, validator=instance_of(bool))
     sideWidth = attr.ib(default=None)
+    sort = attr.ib(default=None)
+    sortDesc = attr.ib(default=None)
 
     def to_json_data(self):
         values = ((self.avg or self.current or self.max or self.min)
@@ -336,6 +338,8 @@ class Legend(object):
             'hideZero': self.hideZero,
             'rightSide': self.rightSide,
             'sideWidth': self.sideWidth,
+            'sort': self.sort,
+            'sortDesc': self.sortDesc,
         }
 
     @staticmethod
@@ -358,6 +362,11 @@ class Target(object):
     datasource = attr.ib(default="")
     hide = attr.ib(default=False)
     format = attr.ib(default=None)
+    calculatedInterval = attr.ib(default=None)
+    datasourceErrors = attr.ib(default=None)
+    errors = attr.ib(default=None)
+    interval = attr.ib(default=None)
+    target = attr.ib(default=None)
 
     def to_json_data(self):
         return {
@@ -373,6 +382,11 @@ class Target(object):
             'datasource': self.datasource,
             'hide': self.hide,
             'format': self.format,
+            'calculatedInterval': self.calculatedInterval,
+            'datasourceErrors': self.datasourceErrors,
+            'errors': self.errors,
+            'interval': self.interval,
+            'target': self.target,
         }
 
     @staticmethod
@@ -797,11 +811,21 @@ DEFAULT_TIME = Time('now-1h', 'now')
 class TimePicker(object):
     refreshIntervals = attr.ib()
     timeOptions = attr.ib()
+    collapse = attr.ib(default=False)
+    enable = attr.ib(default=None)
+    notice = attr.ib(default=None)
+    now = attr.ib(default=None)
+    status = attr.ib(default=None)
 
     def to_json_data(self):
         return {
             'refresh_intervals': self.refreshIntervals,
             'time_options': self.timeOptions,
+            'collapse': self.collapse,
+            'enable': self.enable,
+            'notice': self.notice,
+            'now': self.now,
+            'status': self.status,
         }
 
     @staticmethod
@@ -1145,6 +1169,13 @@ class Graph(object):
     dashLength = attr.ib(default=10)
     dashes = attr.ib(default=False)
     spaceLength = attr.ib(default=10)
+    decimals = attr.ib(default=None)
+    minSpan = attr.ib(default=None)
+    transparent = attr.ib(default=None)
+    repeat = attr.ib(default=None)
+    scopedVars = attr.ib(default=None)
+    repeatIteration = attr.ib(default=None)
+    repeatPanelId = attr.ib(default=None)
 
     def to_json_data(self):
         graphObject = {
@@ -1183,6 +1214,13 @@ class Graph(object):
             'dashLength': self.dashLength,
             'dashes': self.dashes,
             'spaceLength': self.spaceLength,
+            'decimals': self.decimals,
+            'minSpan': self.minSpan,
+            'transparent': self.transparent,
+            'repeat': self.repeat,
+            'scopedVars': self.scopedVars,
+            'repeatIteration': self.repeatIteration,
+            'repeatPanelId': self.repeatPanelId,
         }
         if self.alert:
             graphObject['alert'] = self.alert
@@ -1306,6 +1344,8 @@ class Text(object):
     span = attr.ib(default=None)
     title = attr.ib(default="")
     transparent = attr.ib(default=False, validator=instance_of(bool))
+    dataSource = attr.ib(default=None)
+    style = attr.ib(default=None)
 
     def to_json_data(self):
         return {
@@ -1320,10 +1360,14 @@ class Text(object):
             'title': self.title,
             'transparent': self.transparent,
             'type': TEXT_TYPE,
+            'datasource': self.dataSource,
+            'style': self.style,
         }
 
     @staticmethod
     def parse_json_data(data):
+        if 'datasource' in data:
+            data['dataSource'] = data.pop('datasource')
         data.pop('type')
         return Text(**data)
 
