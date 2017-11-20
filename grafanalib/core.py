@@ -795,6 +795,7 @@ class Template(object):
     )
     tagsQuery = attr.ib(default=None)
     tagValuesQuery = attr.ib(default=None)
+    type = attr.ib(default='query')
 
     def to_json_data(self):
         return {
@@ -823,6 +824,23 @@ class Template(object):
 
     @staticmethod
     def parse_json_data(data):
+        if 'current' in data:
+            current = data.pop('current')
+            if 'text' in current:
+                data['default'] = current['text']
+            elif 'value' in current:
+                data['default'] = current['value']
+        if 'datasource' in data:
+            data['dataSource'] = data.pop('datasource')
+
+        # Deleted values
+        data.pop('hide', None)
+        data.pop('options', None)
+        data.pop('refresh', None)
+        data.pop('sort', None)
+        data.pop('tagValuesQuery', None)
+        data.pop('tagsQuery', None)
+
         return Template(**data)
 
 
@@ -1381,6 +1399,10 @@ class ValueMap(object):
             'value': self.value,
         }
 
+    @staticmethod
+    def parse_json_data(data):
+        return ValueMap(**data)
+
 
 @attr.s
 class RangeMap(object):
@@ -1390,10 +1412,14 @@ class RangeMap(object):
 
     def to_json_data(self):
         return {
-            'from': self.start,
-            'to': self.end,
+            'start': self.start,
+            'end': self.end,
             'text': self.text,
         }
+
+    @staticmethod
+    def parse_json_data(data):
+        return RangeMap(**data)
 
 
 @attr.s
@@ -1894,6 +1920,9 @@ class Table(object):
 
     @staticmethod
     def parse_json_data(data):
+        if 'colors' in data:
+            data['colors'] = [RGBA.parse_json_data(color)
+                              for color in data['colors']]
         if 'datasource' in data:
             data['dataSource'] = data.pop('datasource')
         if 'targets' in data:
