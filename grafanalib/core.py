@@ -75,7 +75,9 @@ class RGBA(object):
     def to_json_data(self):
         return "rgba({}, {}, {}, {})".format(self.r, self.g, self.b, self.a)
 
-    REGEX = re.compile("^rgba\((\d+), (\d+), (\d+), (\d*(?:\.\d+)(?:e-\d\d)?)\)$")
+    REGEX = re.compile(
+        "^rgba\((\d+), (\d+), (\d+), (\d*(?:\.\d+)(?:e-\d\d)?)\)$"
+    )
 
     @classmethod
     def parse_json_data(cls, data):
@@ -685,7 +687,7 @@ class Row(object):
             data,
             dicttransform(
                 'panels',
-                transform=foreach(lambda panel: parse_object(panel, PANEL_TYPES))
+                transform=foreach(lambda pnl: parse_object(pnl, PANEL_TYPES))
             ),
             dicttransform('height', transform=Pixels.parse_json_data)
         )
@@ -1260,7 +1262,10 @@ class Dashboard(object):
             ),
             dicttransform('time', transform=Time.parse_json_data),
             dicttransform('rows', transform=foreach(Row.parse_json_data)),
-            dicttransform('links', transform=foreach(DashboardLink.parse_json_data))
+            dicttransform(
+                'links',
+                transform=foreach(DashboardLink.parse_json_data)
+            )
         )
 
         return cls(**new_data)
@@ -1395,7 +1400,10 @@ class Graph(object):
             dicttransform('y-axis', 'y_axis'),
             dicttransform('alert', transform=Alert.parse_json_data),
             dicttransform('targets', transform=foreach(Target.parse_json_data)),
-            dicttransform('links', transform=foreach(DashboardLink.parse_json_data))
+            dicttransform(
+                'links',
+                transform=foreach(DashboardLink.parse_json_data)
+            )
         )
 
         return cls(**new_data)
@@ -1534,7 +1542,10 @@ class Text(object):
         new_data = transform_dict(
             data,
             dicttransform('datasource', 'dataSource'),
-            dicttransform('links', transform=foreach(DashboardLink.parse_json_data))
+            dicttransform(
+                'links',
+                transform=foreach(DashboardLink.parse_json_data)
+            )
         )
 
         return cls(**new_data)
@@ -1978,11 +1989,21 @@ class Table(object):
             dicttransform('targets', transform=foreach(Target.parse_json_data)),
             dicttransform('gauge', transform=Gauge.parse_json_data),
             dicttransform('sparkline', transform=SparkLine.parse_json_data),
-            dicttransform('mappingTypes', transform=foreach(Mapping.parse_json_data)),
-            dicttransform('links', transform=foreach(DashboardLink.parse_json_data)),
+            dicttransform('mappingTypes',
+                          transform=foreach(Mapping.parse_json_data)),
+            dicttransform(
+                'links',
+                transform=foreach(DashboardLink.parse_json_data)
+            ),
             dicttransform('height', transform=Pixels.parse_json_data),
-            dicttransform('rangeMaps', transform=foreach(RangeMap.parse_json_data)),
-            dicttransform('valueMaps', transform=foreach(ValueMap.parse_json_data))
+            dicttransform(
+                'rangeMaps',
+                transform=foreach(RangeMap.parse_json_data)
+            ),
+            dicttransform(
+                'valueMaps',
+                transform=foreach(ValueMap.parse_json_data)
+            )
         )
 
         return cls(**new_data)
@@ -2044,9 +2065,15 @@ class Table(object):
         new_data = transform_dict(
             data,
             dicttransform('datasource', 'dataSource'),
-            dicttransform('targets', transform=foreach(Target.parse_json_data)),
+            dicttransform(
+                'targets',
+                transform=foreach(Target.parse_json_data)
+            ),
             dicttransform('height', transform=Pixels.parse_json_data),
-            dicttransform('links', transform=foreach(DashboardLink.parse_json_data))
+            dicttransform(
+                'links',
+                transform=foreach(DashboardLink.parse_json_data)
+            )
         )
 
         return cls(**new_data)
