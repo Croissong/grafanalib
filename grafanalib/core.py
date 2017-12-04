@@ -1311,6 +1311,7 @@ class Graph(object):
         validator=instance_of(Tooltip),
     )
     transparent = attr.ib(default=False, validator=instance_of(bool))
+    thresholds = attr.ib(default="")
     xAxis = attr.ib(default=attr.Factory(XAxis), validator=instance_of(XAxis))
     # XXX: This isn't a *good* default, rather it's the default Grafana uses.
     yAxes = attr.ib(
@@ -1365,6 +1366,7 @@ class Graph(object):
             'title': self.title,
             'tooltip': self.tooltip,
             'transparent': self.transparent,
+            'thresholds': self.thresholds,
             'type': GRAPH_TYPE,
             'xaxis': self.xAxis,
             'yaxes': self.yAxes,
