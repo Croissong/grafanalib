@@ -6,7 +6,7 @@ arbitrary Grafana JSON.
 """
 
 import attr
-from attr.validators import instance_of, in_
+from attr.validators import instance_of, in_, optional
 import itertools
 import math
 from numbers import Number
@@ -127,6 +127,9 @@ class Pixels(object):
 
     @classmethod
     def parse_json_data(cls, data):
+        if data is None or data == "":
+            return None
+
         if isinstance(data, int):
             return cls(num=data)
 
@@ -134,9 +137,6 @@ class Pixels(object):
 
         if match is not None:
             return cls(num=int(match.group(1)))
-
-        if data == "":
-            return None
 
         raise ParseJsonException("Unable to parse Pixels {}".format(data))
 
@@ -644,7 +644,7 @@ class Row(object):
     )
     height = attr.ib(
         default=attr.Factory(lambda: DEFAULT_ROW_HEIGHT),
-        validator=instance_of(Pixels),
+        validator=optional(instance_of(Pixels)),
     )
     showTitle = attr.ib(default=None)
     title = attr.ib(default=None)
