@@ -1288,6 +1288,7 @@ class Graph(object):
     error = attr.ib(default=False, validator=instance_of(bool))
     fill = attr.ib(default=1, validator=instance_of(int))
     grid = attr.ib(default=attr.Factory(Grid), validator=instance_of(Grid))
+    height = attr.ib(default=None)
     id = attr.ib(default=None)
     isNew = attr.ib(default=True, validator=instance_of(bool))
     legend = attr.ib(
@@ -1347,6 +1348,7 @@ class Graph(object):
             'error': self.error,
             'fill': self.fill,
             'grid': self.grid,
+            'height': self.height,
             'id': self.id,
             'isNew': self.isNew,
             'legend': self.legend,
@@ -1396,6 +1398,7 @@ class Graph(object):
             data,
             dicttransform('datasource', 'dataSource'),
             dicttransform('linewidth', 'lineWidth'),
+            dicttransform('height', transform=Pixels.parse_json_data),
             dicttransform('pointradius', 'pointRadius'),
             dicttransform('xaxis', 'xAxis', XAxis.parse_json_data),
             dicttransform('yaxes', 'yAxes', YAxes.parse_json_data),
