@@ -105,6 +105,14 @@ class RGBA(object):
                 1.,
             )
 
+        rgb = RGB.parse_json_data(data)
+        return cls(
+                rgb.r,
+                rgb.g,
+                rgb.b,
+                1.,
+            )
+        
         raise ParseJsonException("Unable to parse RGBA: {}".format(data))
 
 
@@ -199,7 +207,6 @@ SINGLESTAT_TYPE = 'singlestat'
 TABLE_TYPE = 'table'
 TEXT_TYPE = 'text'
 ALERTLIST_TYPE = "alertlist"
-TABLE_TYPE = 'table'
 
 DEFAULT_FILL = 1
 DEFAULT_REFRESH = '10s'
@@ -1591,9 +1598,11 @@ class AlertList(object):
     onlyAlertsOnDashboard = attr.ib(default=True, validator=instance_of(bool))
     show = attr.ib(default=ALERTLIST_SHOW_CURRENT)
     sortOrder = attr.ib(default=SORT_ASC, validator=in_([1, 2, 3]))
+    span = attr.ib(default=6)
     stateFilter = attr.ib(default=attr.Factory(list))
     title = attr.ib(default="")
     transparent = attr.ib(default=False, validator=instance_of(bool))
+    type = attr.ib(default=ALERTLIST_TYPE)
 
     def to_json_data(self):
         return {
@@ -1604,11 +1613,24 @@ class AlertList(object):
             'onlyAlertsOnDashboard': self.onlyAlertsOnDashboard,
             'show': self.show,
             'sortOrder': self.sortOrder,
+            'span': self.span,
             'stateFilter': self.stateFilter,
             'title': self.title,
             'transparent': self.transparent,
             'type': ALERTLIST_TYPE,
         }
+
+    @classmethod
+    def parse_json_data(cls, data):
+        new_data = transform_dict(
+            data,
+            dicttransform(
+                'links',
+                transform=foreach(DashboardLink.parse_json_data)
+            )
+        )
+
+        return cls(**new_data)
 
 
 @attr.s
@@ -2125,7 +2147,8 @@ PANEL_TYPES = {
     GRAPH_TYPE: Graph,
     TEXT_TYPE: Text,
     SINGLESTAT_TYPE: SingleStat,
-    TABLE_TYPE: Table
+    TABLE_TYPE: Table,
+    ALERTLIST_TYPE: AlertList
 }
 
 INPUT_TYPES = {
