@@ -124,6 +124,10 @@ def generate_dashboards_script():
     """Entry point for generate-dashboards."""
     run_script(generate_dashboards)
 
+def generate_dashboard_script():
+    """Entry point for generate-dasboard."""
+    run_script(generate_dashboard)    
+
 
 def dashboard_code(code):
     return textwrap.dedent("""
