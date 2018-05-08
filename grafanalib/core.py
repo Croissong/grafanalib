@@ -1913,6 +1913,12 @@ class ColumnStyle(object):
 
     alias = attr.ib(default="")
     pattern = attr.ib(default="")
+    
+    link = attr.ib(default=False, validator=instance_of(bool))
+    linkTargetBlank = attr.ib(default=None, validator=optional(instance_of(bool)))
+    linkTooltip = attr.ib(default=None, validator=optional(instance_of(str)))
+    linkUrl = attr.ib(default=None, validator=optional(instance_of(str)))
+    
     type = attr.ib(
         default=attr.Factory(NumberColumnStyleType),
         validator=instance_of((
@@ -1927,13 +1933,17 @@ class ColumnStyle(object):
         data = {
             'alias': self.alias,
             'pattern': self.pattern,
+            'link': self.link,
+            'linkTargetBlank': self.linkTargetBlank,
+            'linkTooltip': self.linkTooltip,
+            'linkUrl': self.linkUrl
         }
         data.update(self.type.to_json_data())
         return data
 
     @classmethod
     def parse_json_data(cls, data):
-        common_keys = ('alias', 'pattern')
+        common_keys = ('alias', 'pattern', 'link', 'linkTargetBlank', 'linkTooltip', 'linkUrl')
         common_data = {k: v for k, v in data.items()
                        if k in common_keys}
         specific_data = {k: v for k, v in data.items()
