@@ -541,7 +541,11 @@ class XAxis(object):
 
     def to_json_data(self):
         return {
+            'buckets': self.buckets,
+            'mode': self.mode,
+            'name': self.name,
             'show': self.show,
+            'values': self.values
         }
 
     @classmethod
