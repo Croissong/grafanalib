@@ -794,7 +794,6 @@ class DashboardLink(object):
     includeVars = attr.ib(default=None)
     tags = attr.ib(default=attr.Factory(list))
     targetBlank = attr.ib(default=None)
-    url = attr.ib(default=None)
 
     def to_json_data(self):
         title = self.dashboard if self.title is None else self.title
@@ -817,10 +816,8 @@ class DashboardLink(object):
         new_data = transform_dict(
             data,
             dicttransform('dashUri', 'uri'),
-
+            dicttransform('url', 'uri'),
         )
-        new_data.pop('url', None)
-
         return cls(**new_data)
 
 
@@ -2180,7 +2177,7 @@ def parse_object(obj, mapping):
         new_obj = dict(obj)
         for k in obj:
             if k.lower() not in valid_attributes:
-                print("Ignored key {} in {}".format(k, object_type))
+                print("Ignored key [{}] in type [{}]".format(k, object_type))
                 del new_obj[k]
         return object_class.parse_json_data(new_obj)
     except KeyError:
