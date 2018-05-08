@@ -12,6 +12,7 @@ import math
 from numbers import Number
 import warnings
 import re
+import inspect
 
 from collections import namedtuple
 
@@ -2160,6 +2161,13 @@ INPUT_TYPES = {
 def parse_object(obj, mapping):
     object_type = obj.get('type')
     try:
-        return mapping[object_type].parse_json_data(obj)
+        object_class = mapping[object_type]
+        valid_attributes = list(map(lambda x:x.lower(), inspect.getargspec(object_class.__init__).args))
+        new_obj = dict(obj)
+        for k in obj:
+            if k.lower() not in valid_attributes:
+                print("Ignored key {} in {}".format(k, object_type))
+                del new_obj[k]
+        return object_class.parse_json_data(new_obj)
     except KeyError:
         raise ParseJsonException("Unknown object type {}".format(object_type))
