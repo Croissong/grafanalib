@@ -2173,7 +2173,7 @@ def parse_object(obj, mapping):
     object_type = obj.get('type')
     try:
         object_class = mapping[object_type]
-        valid_attributes = list(map(lambda x:x.lower(), inspect.getargspec(object_class.__init__).args))
+        valid_attributes = list(map(lambda x:x.lower(), inspect.getfullargspec(object_class.__init__).args))
         new_obj = dict(obj)
         for k in obj:
             if k.lower() not in valid_attributes:
