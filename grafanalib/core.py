@@ -889,7 +889,7 @@ class Template(object):
             'refresh': self.refresh,
             'regex': self.regex,
             'sort': self.sort,
-            'type': 'query',
+            'type': self.type,
             'useTags': self.useTags,
             'tagsQuery': self.tagsQuery,
             'tagValuesQuery': self.tagValuesQuery,
