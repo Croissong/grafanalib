@@ -1144,6 +1144,7 @@ class Alert(object):
     message = attr.ib()
     alertConditions = attr.ib()
     executionErrorState = attr.ib(default=STATE_ALERTING)
+    forDuration = attr.ib(default="0m")
     frequency = attr.ib(default="60s")
     handler = attr.ib(default=1)
     noDataState = attr.ib(default=STATE_NO_DATA)
@@ -1153,6 +1154,7 @@ class Alert(object):
         return {
             "conditions": self.alertConditions,
             "executionErrorState": self.executionErrorState,
+            "for": self.forDuration,
             "frequency": self.frequency,
             "handler": self.handler,
             "message": self.message,
