@@ -217,6 +217,7 @@ DEFAULT_POINT_RADIUS = 5
 DEFAULT_RENDERER = FLOT
 DEFAULT_STEP = 10
 DEFAULT_LIMIT = 10
+DEFAULT_REPEAT_DIRECTION = 'h'
 TOTAL_SPAN = 12
 
 DARK_STYLE = 'dark'
@@ -1351,6 +1352,7 @@ class Graph(object):
     decimals = attr.ib(default=None)
     minSpan = attr.ib(default=None)
     repeat = attr.ib(default=None)
+    repeatDirection = attr.ib(default=DEFAULT_REPEAT_DIRECTION)
     scopedVars = attr.ib(default=None)
     repeatIteration = attr.ib(default=None)
     repeatPanelId = attr.ib(default=None)
@@ -1402,6 +1404,7 @@ class Graph(object):
             'decimals': self.decimals,
             'minSpan': self.minSpan,
             'repeat': self.repeat,
+            'repeatDirection': self.repeatDirection,
             'scopedVars': self.scopedVars,
             'repeatIteration': self.repeatIteration,
             'repeatPanelId': self.repeatPanelId,
