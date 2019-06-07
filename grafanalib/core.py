@@ -1743,6 +1743,7 @@ class SingleStat(object):
     timeFrom = attr.ib(default=None)
     timeShift = attr.ib(default=None)
     type = attr.ib(default=SINGLESTAT_TYPE)
+    maxPerRow = attr.ib(default=6)
 
     def to_json_data(self):
         return {
@@ -1787,6 +1788,7 @@ class SingleStat(object):
             'error': self.error,
             'timeFrom': self.timeFrom,
             'timeShift': self.timeShift,
+            'maxPerRow': self.maxPerRow
         }
 
     @classmethod
