@@ -34,7 +34,7 @@ setup(
         'Topic :: System :: Monitoring',
     ],
     install_requires=[
-        'attrs',
+        'attrs==19.1.0',
     ],
     extras_require={
         'dev': [
